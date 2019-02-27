@@ -6,12 +6,12 @@
     "version": "*",
     "supportsFullBleed": true,
     "manifestVersion": 2,
-    "requiresCustomScript": true,
+    "requiresCustomScript": false,
     "preconfiguredEntries": [
         {
             "groupId": "3a328f0a-99c4-4b28-95ab-fe0847f657a3",
             "group": {
-                "default": "Puzzlepart"
+                "default": "Modern Script Editor"
             },
             "title": {
                 "default": "Modern Script Editor"
@@ -22,9 +22,9 @@
             "officeFabricIconFontName": "JS",
             "properties": {
                 "script": "",
-                "title": "The Modern Script Editor web part!",
-                "removePadding": false,
-                "spPageContextInfo": false
+                "title": "Modern Script Editor",
+                "removePadding": true,
+                "spPageContextInfo": true
             }
         }
     ]

@@ -10,7 +10,6 @@ import {
 } from '@microsoft/sp-webpart-base';
 import { IScriptEditorProps } from './components/IScriptEditorProps';
 import { IScriptEditorWebPartProps } from './IScriptEditorWebPartProps';
-import PropertyPaneLogo from './PropertyPaneLogo';
 
 export default class ScriptEditorWebPart extends BaseClientSideWebPart<IScriptEditorWebPartProps> {
     public save: (script: string) => void = (script: string) => {
@@ -31,9 +30,12 @@ export default class ScriptEditorWebPart extends BaseClientSideWebPart<IScriptEd
                         element.style.paddingBottom = "0";
                         element.style.marginTop = "0";
                         element.style.marginBottom = "0";
-                        break;
                     }
-                    element = element.parentElement;
+                    if (element.className == "ControlZone") {
+                        break;
+                    } else {
+                        element = element.parentElement;
+                    }
                 }
             }
             this.domElement.innerHTML = this.properties.script;
@@ -82,8 +84,7 @@ export default class ScriptEditorWebPart extends BaseClientSideWebPart<IScriptEd
                                     checked: this.properties.spPageContextInfo,
                                     onText: "Enabled",
                                     offText: "Disabled"
-                                }),
-                                new PropertyPaneLogo()
+                                })
                             ]
                         }
                     ]
