@@ -2,7 +2,7 @@ import * as strings                                             from 'contentQue
 import { IDropdownOption, IPersonaProps, ITag }                 from 'office-ui-fabric-react';
 import { SPHttpClient, SPHttpClientResponse }                   from '@microsoft/sp-http';
 import { isEmpty }                                              from '@microsoft/sp-lodash-subset';
-import { IWebPartContext }                                      from '@microsoft/sp-webpart-base';
+import { WebPartContext }                                       from '@microsoft/sp-webpart-base';
 import { Text, Log }                                            from '@microsoft/sp-core-library';
 import { IContentQueryService }                                 from './IContentQueryService';
 import { IQueryFilterField }                                    from '../../controls/PropertyPaneQueryFilterPanel/components/QueryFilter/IQueryFilterField';
@@ -24,7 +24,7 @@ export class ContentQueryService implements IContentQueryService {
     /**************************************************************************************************
      * The page context and http clients used for performing REST calls
      **************************************************************************************************/
-    private context: IWebPartContext;
+    private context: WebPartContext;
     private spHttpClient: SPHttpClient;
 
 
@@ -50,10 +50,10 @@ export class ContentQueryService implements IContentQueryService {
 
     /**************************************************************************************************
      * Constructor
-     * @param context : A IWebPartContext for logging and page context
+     * @param context : A WebPartContext for logging and page context
      * @param spHttpClient : A SPHttpClient for performing SharePoint specific requests
      **************************************************************************************************/
-    constructor(context: IWebPartContext, spHttpClient: SPHttpClient) {
+    constructor(context: WebPartContext, spHttpClient: SPHttpClient) {
         Log.verbose(this.logSource, "Initializing a new IContentQueryService instance...", context.serviceScope);
 
         this.context = context;

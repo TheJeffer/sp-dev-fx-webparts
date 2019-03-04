@@ -3,6 +3,7 @@ import { cloneDeep }                            from '@microsoft/sp-lodash-subse
 import { Text }                                 from '@microsoft/sp-core-library';
 import { isEmpty }                              from '@microsoft/sp-lodash-subset';
 import { Spinner, Button, ButtonType, Label }   from 'office-ui-fabric-react';
+import { IconButton, IButtonProps }             from 'office-ui-fabric-react/lib/Button';
 import { QueryFilter }                          from '../QueryFilter/QueryFilter';
 import { IQueryFilter }                         from '../QueryFilter/IQueryFilter';
 import { QueryFilterOperator }                  from '../QueryFilter/QueryFilterOperator';
@@ -211,7 +212,7 @@ export class QueryFilterPanel extends React.Component<IQueryFilterPanelProps, IQ
                 }
 
                 { !this.state.loading && 
-                    <Button buttonType={ButtonType.primary} onClick={this.onAddFilterClick.bind(this)} disabled={this.props.disabled} icon='Add'>{this.props.strings.addFilterLabel}</Button> 
+                    <IconButton onClick={this.onAddFilterClick.bind(this)} disabled={this.props.disabled} iconProps={ { iconName: 'Add' } }>{this.props.strings.addFilterLabel}</IconButton> 
                 }
 
                 {error}

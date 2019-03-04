@@ -283,7 +283,7 @@ export default class ContentQuery extends React.Component<IContentQueryProps, IC
     return (
       <div className={styles.cqwp}>
 
-        {loading}
+        {false && loading}
 
         {error}
 
