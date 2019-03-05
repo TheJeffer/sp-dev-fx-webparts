@@ -44,6 +44,19 @@ export default class ContentQuery extends React.Component<IContentQueryProps, IC
         handlebars: Handlebars
       });
 
+      Handlebars.registerHelper('pluck', (arr: Array<any>, prop: string) => {
+        if (typeof(arr) == 'undefined') return '';
+        var res = [];
+        for (var i = 0; i < arr.length; i++) {
+          var val = arr[i][prop];
+          if (typeof val !== 'undefined') {
+            res.push(val);
+          }
+        }
+        return res;
+      });
+      
+
       // Ensures the WebPart's namespace for external scripts
       window[this.nsReactContentQuery] = window[this.nsReactContentQuery] || {};
       window[this.nsReactContentQuery][this.nsExternalScripts] = window[this.nsReactContentQuery][this.nsExternalScripts] || {};
@@ -283,7 +296,7 @@ export default class ContentQuery extends React.Component<IContentQueryProps, IC
     return (
       <div className={styles.cqwp}>
 
-        {false && loading}
+        {loading}
 
         {error}
 

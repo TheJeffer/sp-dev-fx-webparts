@@ -15,7 +15,32 @@ export class ListService {
      **************************************************************************************************/
     constructor(spHttpClient: SPHttpClient) {
         this.spHttpClient = spHttpClient;
-    }
+	}
+	
+	/**************************************************************************************************
+	 * Performs a CAML query against the specified list and returns the resulting items
+	 * @param webUrl : The url of the web which contains the specified list
+	 * @param listId : The id of the list which contains the elements to query
+	 * @param camlQuery : The CAML query to perform on the specified list
+	 **************************************************************************************************/
+	public getListItemsByQuery(webUrl: string, listId: string, camlQuery: string): Promise<any> {
+		var vanillaPromise = this.getListItemsByQueryVanilla(webUrl, listId, camlQuery);
+		var objectPromise = this.getListItemsByQueryObjects(webUrl, listId, camlQuery);
+
+		return new Promise<any>((resolve,reject) => {
+			Promise.all([vanillaPromise, objectPromise]).then((values) => {
+				let vanillaData = values[0].value;
+				let objectData = values[1].Row;
+
+				for (let index = 0; index < vanillaData.length; index++) {
+					vanillaData[index].objectData = objectData[index];					
+				}
+				resolve(vanillaData);
+			}).catch((error) => { 
+				reject(error); 
+			});
+		});
+	}
 
 
 	/**************************************************************************************************
@@ -24,13 +49,39 @@ export class ListService {
 	 * @param listId : The id of the list which contains the elements to query
 	 * @param camlQuery : The CAML query to perform on the specified list
 	 **************************************************************************************************/
-	public getListItemsByQuery(webUrl: string, listId: string, camlQuery: string): Promise<any> {
+	public getListItemsByQueryVanilla(webUrl: string, listId: string, camlQuery: string): Promise<any> {
 		return new Promise<any>((resolve,reject) => {
 			let endpoint = Text.format("{0}/_api/web/lists(guid'{1}')/GetItems?$expand=FieldValuesAsText,FieldValuesAsHtml", webUrl, listId);
 			let data:any = { 
 				query : { 
 					__metadata: { type: "SP.CamlQuery" }, 
 					ViewXml: camlQuery
+				}
+			};
+			let options: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(data) };
+
+			this.spHttpClient.post(endpoint, SPHttpClient.configurations.v1, options)
+				.then((postResponse: SPHttpClientResponse) => {
+					if(postResponse.ok) {
+						resolve(postResponse.json());
+					}
+					else {
+						reject(postResponse);
+					}
+				})
+				.catch((error) => { 
+					reject(error); 
+				}); 
+        });
+	}
+
+	public getListItemsByQueryObjects(webUrl: string, listId: string, camlQuery: string): Promise<any> {
+		return new Promise<any>((resolve,reject) => {
+			let endpoint = Text.format("{0}/_api/web/lists(guid'{1}')/RenderListDataAsStream?Field=FieldValuesAsText,FieldValuesAsHtml", webUrl, listId);
+			let data:any = {
+				parameters: {
+				  RenderOptions: 2,
+				  ViewXml: camlQuery
 				}
 			};
 			let options: ISPHttpClientOptions = { headers: { 'odata-version': '3.0' }, body: JSON.stringify(data) };

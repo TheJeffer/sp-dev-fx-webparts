@@ -90,9 +90,9 @@ export class ContentQueryService implements IContentQueryService {
 
             // Queries the list with the generated caml query
             this.listService.getListItemsByQuery(querySettings.webUrl, querySettings.listId, query)
-                .then((data: any) => {
+                .then((results: any) => {
                     // Updates the template context with the normalized query results
-                    let normalizedResults = this.normalizeQueryResults(data.value, querySettings.viewFields);
+                    let normalizedResults = this.normalizeQueryResults(results, querySettings.viewFields);
                     templateContext.items = normalizedResults;
                     resolve(templateContext);
                 })
@@ -572,7 +572,7 @@ export class ContentQueryService implements IContentQueryService {
                 normalizedResult[viewField] = {
                     textValue: result.FieldValuesAsText[spacesFormattedName],
                     htmlValue: result.FieldValuesAsHtml[spacesFormattedName],
-                    rawValue: result[viewField] || result[viewField + 'Id']
+                    rawValue: result.objectData[viewField]
                 };
             }
             normalizedResults.push(normalizedResult);

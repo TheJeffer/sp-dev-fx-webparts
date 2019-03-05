@@ -100,7 +100,7 @@ define([], function() {
       cancelButtonText: 'Cancel'
     },
     contentQueryStrings: {
-      loadingItems: 'Processing query',
+      loadingItems: 'Retrieving Content',
       mandatoryProperties: 'Configure the following mandatory properties in order to display results :',
       errorLoadingQuery: 'An error occured while processing the query : {0}',
       errorLoadingTemplate: 'An error occured while loading the template:  {0}',
